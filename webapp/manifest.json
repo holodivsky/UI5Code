@@ -1,0 +1,130 @@
+{
+    "_version": "1.12.0",
+    "sap.app": {
+        "id": "infopulse.cv.infopulse-cvapp-ui",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "title": "{{manageResumes.app.title}}",
+        "description": "{{manageResumes.app.description}}",
+        "applicationVersion": {
+            "version": "1.0.0"
+        },
+        "dataSources": {
+            "mainService": {
+                "uri": "/CVInfoPulse/fiori/xs/cv.xsodata/",
+                "type": "OData",
+                "settings": {
+                    "odataVersion": "2.0",
+                    "localUri": "localService/metadata.xml"
+                }
+            }
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "sap-icon://task",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "rootView": {
+            "viewName": "infopulse.cv.infopulse-cvapp-ui.view.App",
+            "type": "XML",
+            "async": true,
+            "id": "app"
+        },
+        "dependencies": {
+            "minUI5Version": "1.60.0",
+            "libs": {
+                "sap.ui.core": {},
+                "sap.m": {},
+                "sap.f": {},
+                "sap.ushell": {},
+                "sap.collaboration": {
+                    "lazy": true
+                }
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "infopulse.cv.infopulse-cvapp-ui.i18n.i18n"
+                }
+            },
+            "employeeURL": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/employeePageURL.json"
+            },
+            "": {
+                "dataSource": "mainService",
+                "preload": true,
+                "settings": {
+                "defaultBindingMode": "TwoWay"
+            }}
+        },
+        "services": {
+            "ShellUIService": {
+                "factoryName": "sap.ushell.ui5service.ShellUIService"
+            }
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "viewType": "XML",
+                "viewPath": "infopulse.cv.infopulse-cvapp-ui.view",
+                "controlId": "app",
+                "controlAggregation": "pages",
+                "async": true
+            },
+            "routes": [
+                {
+                    "pattern": "",
+                    "name": "employeeList",
+                    "target": [
+                        "employeeList"
+                    ]
+                },
+                {
+                    "pattern": "employeePage/{employeeId}",
+                    "name": "employeePage",
+                    "target": "employeePage"
+                }
+            ],
+            "targets": {
+                "employeeList": {
+                    "viewName": "EmployeeList",
+                    "viewId": "employeeList",
+                    "viewLevel": 1
+                },
+                "employeePage": {
+                    "viewName": "EmployeePage",
+                    "viewId": "employeePage",
+                    "viewLevel": 2
+                },
+                "notFound": {
+                    "viewName": "NotFoundPage",
+                    "viewId": "notFound"
+                }
+            }
+        }
+    },
+    "sap.platform.hcp": {
+        "uri": "webapp",
+        "_version": "1.1.0"
+    }
+}

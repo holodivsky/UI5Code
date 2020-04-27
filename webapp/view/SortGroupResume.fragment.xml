@@ -1,0 +1,19 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <ViewSettingsDialog
+        confirm=".onConfirmViewSettingsDialog"
+    >
+        <sortItems>
+            <ViewSettingsItem
+                text="{i18n>manageResumes.employeePage.sortGroupFragment.uploadDate}"
+                key="UPDATED"
+            />
+            <ViewSettingsItem
+                text="{i18n>manageResumes.employeePage.sortGroupFragment.fileFormat}"
+                key="CVFTYPE"
+            />
+        </sortItems>
+    </ViewSettingsDialog>
+</core:FragmentDefinition>

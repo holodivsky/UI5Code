@@ -1,0 +1,264 @@
+<mvc:View
+    controllerName="infopulse.cv.infopulse-cvapp-ui.controller.EmployeeList"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    xmlns:fb="sap.ui.comp.filterbar"
+>
+    <f:DynamicPage id="masterPage" showFooter="true">
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <f:content>
+                    <fb:FilterBar
+                        showGoOnFB="false"
+                        showGoButton="false"
+                        id="filterbar"
+                        reset="onReset"
+                        search="onFilterSearch"
+                        useToolbar="false"
+                        showClearOnFB="true"
+                    >
+                        <fb:filterItems>
+                            <fb:FilterItem name="Search Field control" label="{i18n>manageResumes.filterBar.search}">
+                                <fb:control>
+                                    <SearchField id="searchByNameFilter" liveChange="onSearchByName"/>
+                                </fb:control>
+                            </fb:FilterItem>
+                            <fb:FilterItem name="Department filter" label="{i18n>manageResumes.filterBar.department}">
+                                <fb:control>
+                                    <Select
+                                        id="sDepartment"
+                                        forceSelection="true"
+                                        change="onSelectDepartmentChange"
+                                    >
+                                        <core:Item key="ALL" text="All"/>
+                                        <core:Item key="BI" text="{i18n>manageResumes.filterBar.department.BI}"/>
+                                        <core:Item key="SAP" text="{i18n>manageResumes.filterBar.department.SAP}"/>
+                                        <core:Item key="SAP BG" text="{i18n>manageResumes.filterBar.department.SAPBG}"/>
+                                        <core:Item key="PMO" text="{i18n>manageResumes.filterBar.department.PMO}"/>
+                                    </Select>
+                                </fb:control>
+                            </fb:FilterItem>
+                            <fb:FilterItem name="Status filter" label="{i18n>manageResumes.filterBar.status}">
+                                <fb:control>
+                                    <Select
+                                        id="sStatus"
+                                        forceSelection="true"
+                                        change="onSelectStatusChange"
+                                    >
+                                        <core:Item key="ALL" text="All"/>
+                                        <core:Item key="NeedToUpdate" text="{i18n>manageResumes.filterBar.status.needToUpdate}"/>
+                                        <core:Item key="InProgress" text="{i18n>manageResumes.filterBar.status.inProgress}"/>
+                                        <core:Item key="ForApproval" text="{i18n>manageResumes.filterBar.status.forApproval}"/>
+                                        <core:Item key="Complete" text="{i18n>manageResumes.filterBar.status.complete}"/>
+                                    </Select>
+                                </fb:control>
+                            </fb:FilterItem>
+                            <fb:FilterItem name="Completed from date filter" label="{i18n>manageResumes.filterBar.completedFromDate}">
+                                <fb:control>
+                                    <DatePicker
+                                        id="dateForCompare"
+                                        placeholder="{i18n>manageResumes.filterBar.completedFromDate.placeholder}"
+                                        change="onCompletedFromDateChange"
+                                    />
+                                </fb:control>
+                            </fb:FilterItem>
+                        </fb:filterItems>
+                    </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content>
+            <Table
+                id="employeeListTable"
+                items="{
+                    path: '/CVDataAcc',
+                    length: 1000,
+                    sorter: {
+                        path: 'DEPARTMENT',
+                        descending: true,
+                        group: true
+                    }
+                }"
+                updateFinished="onUpdateFinished"
+                mode="MultiSelect"
+                sticky="ColumnHeaders"
+            >
+                <infoToolbar>
+                    <Toolbar class="stickyToolbar">
+                        <Label
+                            wrapping="true"
+                            text="{
+                                parts: [
+                                    'i18n>manageResumes.employeeTable.infoToolbar.date',
+                                    {
+                                        path:'viewModel>/outdateDate',
+                                        type: 'sap.ui.model.type.Date',
+                                        formatOptions: {pattern: 'MM dd YYYY'}
+                                    }
+                                ],
+                                formatter: 'jQuery.sap.formatMessage'
+                            }"/>
+                    </Toolbar>
+                </infoToolbar>
+                <headerToolbar>
+                    <Toolbar>
+                        <Title
+                            id="tableHeader"
+                            text="{
+                                parts: ['i18n>manageResumes.employeeTable.cnt','viewModel>/listLength'],
+                                formatter: 'jQuery.sap.formatMessage'
+                            }"
+                        />
+                        <ToolbarSpacer/>
+                        <Button
+                            tooltip="{i18n>manageResumes.employeeTable.toolBar.settings}"
+                            icon="sap-icon://action-settings"
+                            press="onOpenViewSettings"
+                        />
+                        <Button
+                            tooltip="{i18n>manageResumes.employeeTable.toolBar.export}"
+                            text="{i18n>manageResumes.employeeTableToolBar.exportToExcel.btn}"
+                            icon="sap-icon://excel-attachment"
+                            press="onExport"
+                        />
+                    </Toolbar>
+                </headerToolbar>
+                <columns>
+                    <Column
+                        width="4em"
+                        vAlign="Middle"
+                        hAlign="Center"
+                    >
+                        <Text text="{i18n>manageResumes.employeeTable.status.col}"/>
+                    </Column>
+                    <Column vAlign="Middle">
+                        <Text text="{i18n>manageResumes.employeeTable.employeeName.col}"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>manageResumes.employeeTable.employeeDepartment.col}"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>manageResumes.employeeTable.employeeDeliveryManager.col}"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>manageResumes.employeeTable.employeeUpdateDate.col}"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>manageResumes.employeeTable.employeeRequestDate.col}"/>
+                    </Column>
+                    <Column>
+                        <Text text="{i18n>manageResumes.employeeTable.employeeLastUploadDate.col}"/>
+                    </Column>
+                    <Column
+                        minScreenWidth="Desktop"
+                        demandPopin="true"
+                        hAlign="Center"
+                        width="20%"
+                    >
+                        <Text text="{i18n>manageResumes.employeeTable.employeeAction.col}"/>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Navigation" press="onShowEmployeePage">
+                        <cells>
+                            <core:Icon
+                                src="{ path: 'CVSTATUS', formatter: '.formatter.status'}"
+                                color="{ path: 'CVSTATUS', formatter: '.formatter.color'}"
+                                tooltip="{ path: 'CVSTATUS', formatter: '.formatter.tooltip'}"
+                                class="sapUiResponsiveContentPadding"
+                                size="1.5rem"
+                            />
+                            <Text text="{NAME}"/>
+                            <Text text="{DEPARTMENT}"/>
+                            <Text text="{MANAGER}"/>
+                            <Text 
+                                text="{
+                                    path: 'UPDATED',
+                                    type: 'sap.ui.model.type.Date',
+                                    formatOptions: { style: 'short'}
+                                }"
+                            />
+                            <Text 
+                                text="{
+                                    path: 'REQUEST',
+                                    type: 'sap.ui.model.type.Date',
+                                    formatOptions: { style: 'short'}
+                                }"/>
+                            <Text
+                                text="{= ${UPLOAD}
+                                    ? ${
+                                        path:'UPLOAD',
+                                        type:'sap.ui.model.type.Date',
+                                        formatOptions: { style: 'short'}
+                                    }
+                                    : ${i18n>manageResumes.employeeTable.employeeLastUploadDate.txt}
+                                    }"
+                            />
+                            <HBox justifyContent="Center">
+                                <Button
+                                    icon="sap-icon://email"
+                                    type="Transparent"
+                                    enabled="{= ${CVSTATUS}==='NeedToUpdate' || ${CVSTATUS}==='Complete'}"
+                                    visible="{= ${CVSTATUS}!=='InProgress'}"
+                                    tooltip="{i18n>manageResumes.employeeTable.actionButton.sendEmail}"
+                                    press="onSendRequestForUpdatePress"
+                                />
+                                <Button
+                                    icon="sap-icon://email-read"
+                                    type="Transparent"
+                                    visible="{= ${CVSTATUS}==='InProgress'}"
+                                    tooltip="{i18n>manageResumes.employeeTable.actionButton.repeatNotice}"
+                                    press="onRepeatNoticePress"
+                                />
+                                <Button
+                                    icon="sap-icon://accept"
+                                    type="Transparent"
+                                    enabled="{= ${CVSTATUS}==='ForApproval' }"
+                                    tooltip="{i18n>manageResumes.employeeTable.actionButton.accept}"
+                                    press="onConfirmEmployeeCvPress"
+                                />
+                                <Button
+                                    icon="sap-icon://decline"
+                                    type="Transparent"
+                                    enabled="{= ${CVSTATUS}==='ForApproval' }"
+                                    tooltip="{i18n>manageResumes.employeeTable.actionButton.reject}"
+                                    press="onRejectEmployeeCvPress"
+                                />
+                                <Button
+                                    icon="sap-icon://download"
+                                    type="Transparent"
+                                    tooltip="{i18n>manageResumes.employeeTable.actionButton.download}"
+                                />
+                                <Button
+                                    icon="sap-icon://message-information"
+                                    type="Transparent"
+                                    tooltip="{i18n>manageResumes.employeeTable.actionButton.information}"
+                                    press="onEmployeeInfoPopover"
+                                />
+                            </HBox>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </f:content>
+        <f:footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button width="auto" text="{i18n>manageResumes.employeeTable.actionButton.sendEmail}" press="onRefresh"/>
+                <Button width="auto" text="{i18n>manageResumes.employeeTable.actionButton.repeatNotice}"/>
+                <Button
+                    width="auto"
+                    type="Accept"
+                    text="{i18n>manageResumes.employeeTable.actionButton.accept}"
+                />
+                <Button
+                    width="auto"
+                    type="Reject"
+                    text="{i18n>manageResumes.employeeTable.actionButton.reject}"
+                />
+            </OverflowToolbar>
+        </f:footer>
+    </f:DynamicPage>
+</mvc:View>

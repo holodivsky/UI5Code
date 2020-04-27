@@ -1,0 +1,34 @@
+{
+    "application": {
+        "id": "",
+        "title": "Manage Resumes",
+        "type": "SAP_UI5_Component",
+        "componentUrl": "/",
+        "appUrl": "#infopulsecvappui-Display",
+        "navigationComponentName": "infopulse.cv.infopulse-cvapp-ui",
+        "intentSemanticObject": "infopulse-cvapp-ui",
+        "intentAction": "Display",
+        "html5ApplicationName": "infopulsecvappui",
+        "HCPParentApplicationName": ""
+    },
+    "assignment": {
+        "groups": [
+            "00000000-0000-1111-0000-00000000"
+        ],
+        "contentPackages": [
+            "00000000-0000-2222-0000-00000000"
+        ],
+        "categories": []
+    },
+    "tile": {
+        "type": "StaticTile",
+        "title": "Manage Resumes",
+        "subtitle": "Handle outdated CV",
+        "searchKeywords": "Manage Resumes,Handle outdated CV",
+        "displayIconUrl": "sap-icon://account",
+        "displayInfoText": "",
+        "size": "1x1",
+        "serviceURL": "",
+        "refreshInterval": ""
+    }
+}

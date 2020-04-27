@@ -1,0 +1,18 @@
+<mvc:View
+    controllerName="infopulse.cv.infopulse-cvapp-ui.controller.NotFoundPage"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+>
+    <MessagePage
+        title="{i18n>manageResumes.notFoundView.notFoundTitle}"
+        text="{i18n>manageResumes.notFoundView.notFoundText}"
+        icon="{sap-icon://document}"
+    >
+        <customDescription>
+            <Link
+                text="{i18n>manageResumes.notFoundView.backToEmployeeList}"
+                press="onNavToListLinkPressed"
+            />
+        </customDescription>
+    </MessagePage>
+</mvc:View>

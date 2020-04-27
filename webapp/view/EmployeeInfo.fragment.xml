@@ -1,0 +1,36 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout">
+    <Popover
+        title="{i18n>manageResumes.popover.titleText}"
+        class="sapUiPopupWithPadding"
+        placement="Auto" 
+        contentWidth="auto"
+        contentHeight="auto"
+    >
+        <layout:HorizontalLayout>
+            <Image src="image/employeePhoto.png" width="auto"/>
+            <Panel backgroundDesign="Transparent">
+                <content>
+                    <ObjectStatus 
+                        title="Status"
+                        text="{CVSTATUS}"
+                        state="{path: 'CVSTATUS', formatter: '.formatter.state'}"
+                    />
+                    <ObjectAttribute title="{i18n>manageResumes.employeeTable.employeeName.col}" text="{NAME}"/>
+                    <ObjectAttribute title="{manageResumes.employeeTable.employeeDeliveryManager.col}" text="{MANAGER}"/>
+                    <ObjectAttribute title="{i18n>manageResumes.employeeTable.employeeDepartment.col}" text="{DEPARTMENT}"/>
+                    <ObjectAttribute 
+                        title="{i18n>manageResumes.employeeTable.employeeLastUploadDate.col}"
+                        text="{
+                            path:'UPDATED',
+                            type:'sap.ui.model.type.Date',
+                            formatOptions: { style: 'short'}
+                        }"
+                    />
+                </content>
+            </Panel>
+        </layout:HorizontalLayout>
+    </Popover>
+</core:FragmentDefinition>

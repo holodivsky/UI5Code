@@ -1,0 +1,144 @@
+<mvc:View
+    controllerName="infopulse.cv.infopulse-cvapp-ui.controller.EmployeePage"
+    xmlns="sap.uxap"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns:m="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:u="sap.ui.unified"
+>
+    <ObjectPageLayout
+        showTitleInHeaderContent="true"
+        showFooter="true"
+        busy="{viewModel>/busy}"
+    >
+        <headerTitle>
+            <ObjectPageHeader
+                id="employeePageHeader"
+                objectImageURI="sap-icon://employee"
+                objectImageShape="Circle"
+                objectTitle="{NAME}"
+                objectImageAlt="{NAME}"
+                objectSubtitle="{POSITION}"
+                isObjectTitleAlwaysVisible="false"
+                isObjectSubtitleAlwaysVisible="false"
+            />
+        </headerTitle>
+        <headerContent>
+            <layout:VerticalLayout>
+                <m:Link text="{EMAIL}"/>
+            </layout:VerticalLayout>
+            <layout:VerticalLayout>
+                <m:ObjectStatus
+                    title="{i18n>manageResumes.employeeTable.status.col}"
+                    text="{
+                        path:'CVSTATUS',
+                        formatter: '.formatter.tooltip'
+                    }"
+                />
+                <m:ObjectStatus
+                    title="{i18n>manageResumes.employeeTable.employeeLastUploadDate.col}"
+                    text="{
+                       path:'UPDATED',
+                       type:'sap.ui.model.type.Date',
+                       formatOptions: { style: 'short'}
+                    }"
+                />
+                <m:ObjectStatus
+                    title="{i18n>manageResumes.employeeTable.employeeRequestDate.col}"
+                    text="{
+                        path:'REQUEST',
+                        type:'sap.ui.model.type.Date',
+                        formatOptions: { style: 'short'}
+                    }"
+                />
+            </layout:VerticalLayout>
+        </headerContent>
+        <sections>
+            <ObjectPageSection title="{i18n>manageResumes.employeePage.objectSelectionTitle}">
+                <subSections>
+                    <ObjectPageSubSection>
+                        <m:List
+                            id="listOfResume"
+                            items="{
+                                path: 'FilesList/' ,
+                                sorter: {
+                                    path: 'UPDATED',
+                                    group : true,
+                                    descending: true 
+                                }
+                            }">
+                            <m:headerToolbar>
+                                <m:Toolbar>
+                                    <m:Title text="{i18n>manageResumes.employeePage.resumeTableTitle}"/>
+                                    <m:ToolbarSpacer/>
+                                    <u:FileUploader
+                                        id="fileUploader"
+                                        fileType="doc,pdf,docx,ppt,pptx"
+                                        style="Emphasized"
+                                        placeholder="{i18n>manageResumes.employeePage.fileUploader}"
+                                        uploadComplete="onUploadComplete"
+                                        change="handleFileUploaderChange"
+                                        sendXHR="true"
+                                        sameFilenameAllowed="true"
+                                        multiple="true"
+                                    />
+                                    <m:Button
+                                        text="{i18n>manageResumes.employeePage.upload.btn}"
+                                        type="Transparent"
+                                        press="handleUploadPress"
+                                    />
+                                    <m:Button
+                                        icon="sap-icon://action-settings"
+                                        tooltip="{i18n>manageResumes.employeeTable.toolBar.settings}"
+                                        press="onOpenViewSettings"
+                                    />
+                                </m:Toolbar>
+                            </m:headerToolbar>
+                            <m:CustomListItem>
+                                <m:HBox>
+                                    <core:Icon
+                                        size="2rem"
+                                        src="{path: 'CVFTYPE', formatter: '.formatter.getFileIcon'}"
+                                        class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"
+                                    />
+                                    <m:VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
+                                        <m:Link text="{CVNAME}"/>
+                                        <m:Label text="{
+                                            path:'UPDATED',
+                                            type:'sap.ui.model.type.Date',
+                                            formatOptions: { style: 'short'}
+                                        }"/>
+                                    </m:VBox>
+                                </m:HBox>
+                            </m:CustomListItem>
+                        </m:List>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+        </sections>
+        <footer>
+            <m:OverflowToolbar>
+                <m:ToolbarSpacer />
+                <m:Button
+                    visible="{= ${CVSTATUS}==='NeedToUpdate' || ${CVSTATUS}==='Complete'}"
+                    text="{i18n>manageResumes.employeeTable.actionButton.sendEmail}"
+                />
+                <m:Button
+                    visible="{= ${CVSTATUS}==='InProgress'}"
+                    text="{i18n>manageResumes.employeeTable.actionButton.repeatNotice}"
+                />
+                <m:Button
+                    type="Accept"
+                    visible="{= ${CVSTATUS}==='ForApproval' }"
+                    text="{i18n>manageResumes.employeeTable.actionButton.accept}"
+                />
+                <m:Button
+                    type="Reject"
+                    visible="{= ${CVSTATUS}==='ForApproval' }"
+                    text="{i18n>manageResumes.employeeTable.actionButton.reject}"
+                />
+            </m:OverflowToolbar>
+        </footer>
+    </ObjectPageLayout>
+</mvc:View>
